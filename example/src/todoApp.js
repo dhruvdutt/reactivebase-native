@@ -89,17 +89,10 @@ class TodoApp extends Component {
 	// }
 
 	customQuery() {
+		console.log("@customQuery");
 		return {
 			match_all: {}
 		};
-
-		// return {
-		// 	range: {
-		// 		createdAt: {
-		// 			gt: "0"
-		// 		}
-		// 	}
-		// };
 	}
 
 	onAllData(allData) {
@@ -134,6 +127,7 @@ class TodoApp extends Component {
 	}
 
 	render() {
+		console.log("this.state", this.state);
 		let todos = this.props.model.todos;
 
 		let { nowShowing, newTodo } = this.state;

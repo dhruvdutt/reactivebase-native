@@ -98,8 +98,8 @@ class TodoModel {
 				body: jsonObject
 			})
 			.on("data", (response) => {
+				console.log("Added todo, informing changes", response);
 				this.inform();
-				console.log("addTodo", response);
 			})
 			.on("error", function(error) {
 				console.log(error);

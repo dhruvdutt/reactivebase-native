@@ -26,6 +26,14 @@ import { backgroundColor, titleColor } from "./constants";
 
 let model = new TodoModel("react-todos");
 
+model.subscribe(reRegister);
+
+function reRegister() {
+	console.log("reRegistering everything");
+	module.exports = Main;
+	Expo.registerRootComponent(Main);
+}
+
 class Main extends Component {
 	state = {
 		isReady: false
