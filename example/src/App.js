@@ -46,11 +46,18 @@ class Main extends Component {
 			return <Text>Loading...</Text>;
 		}
 
+		const topBar = (
+			<View
+				style={{ paddingTop: Expo.Constants.statusBarHeight, backgroundColor }}
+			/>
+		);
+
 		return (
 			<View>
-				<Header>
+				{topBar}
+				<Header style={{ backgroundColor }}>
 					<Body>
-						<Title>ReactiveBase Native Demo</Title>
+						<Title style={{ color: titleColor }}>todos</Title>
 					</Body>
 				</Header>
 				<ScrollView>

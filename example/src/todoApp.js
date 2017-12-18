@@ -43,6 +43,10 @@ import {
 	ReactiveList
 } from "@appbaseio/reactivebase-native";
 
+import { titleColor } from "./constants";
+
+var { height, width } = Dimensions.get("window");
+
 const ALL_TODOS = "all";
 const ACTIVE_TODOS = "active";
 const COMPLETED_TODOS = "completed";
@@ -71,10 +75,10 @@ class TodoApp extends Component {
 		this.setState({ newTodo });
 	}
 
-	onSubmit(event) {
-		const val = this.state.newTodo.trim();
-		if (val) {
-			this.props.model.addTodo(val);
+	onSubmit() {
+		const newTodo = this.state.newTodo.trim();
+		if (newTodo) {
+			this.props.model.addTodo(newTodo);
 			this.setState({ newTodo: "" });
 		}
 	}
@@ -88,6 +92,18 @@ class TodoApp extends Component {
 		return {
 			match_all: {}
 		};
+
+		// return {
+		// 	range: {
+		// 		createdAt: {
+		// 			gt: "0"
+		// 		}
+		// 	}
+		// };
+	}
+
+	onAllData(allData) {
+		console.log("@allData", allData);
 	}
 
 	onData(data) {
@@ -106,7 +122,7 @@ class TodoApp extends Component {
 		//   />
 		// )
 
-		console.log("onData", data);
+		console.log("@onData", data);
 
 		let todo = data._source;
 
@@ -139,25 +155,51 @@ class TodoApp extends Component {
 
 		return (
 			<View style={{ padding: 10, backgroundColor: "#f5f5f5" }}>
-				<ReactiveBase
-					app="todomvc"
-					credentials="kDoV3s5Xk:4994cac6-00a3-4179-b159-b0adbfdde34b"
-					type="todo_reactjs"
-				>
-					<DataController
-						componentId="AllTodosSensor"
-						visible={false}
-						customQuery={this.customQuery}
-					/>
-					<ReactiveList
-						componentId="ReactiveList"
-						dataField="createdAt"
-						onData={this.onData}
-						react={{
-							and: ["AllTodosSensor"]
-						}}
-					/>
-				</ReactiveBase>
+				<Container>
+					<ReactiveBase
+						app="todomvc"
+						credentials="kDoV3s5Xk:4994cac6-00a3-4179-b159-b0adbfdde34b"
+						type="todo_reactjs"
+					>
+						<DataController
+							componentId="AllTodosSensor"
+							visible={false}
+							customQuery={this.customQuery}
+						/>
+						<ReactiveList
+							componentId="ReactiveList"
+							dataField="createdAt"
+							onData={this.onData}
+							// onAllData={this.onAllData}
+							react={{
+								and: ["AllTodosSensor"]
+							}}
+						/>
+						<View>
+							<TextField
+								componentId="NewTodoSensor"
+								dataField="title"
+								defaultSelected={newTodo}
+								placeholder="What needs to be done?"
+								onValueChange={this.handleChange}
+							/>
+						</View>
+						<View
+							style={{
+								flex: 1,
+								flexDirection: "row",
+								marginTop: 5,
+								justifyContent: "flex-end"
+							}}
+						>
+							{/* @TODO Fix input */}
+							{/* <Input placeholder={"What needs to be done"} value={newTodo} /> */}
+							<Button info onPress={this.onSubmit}>
+								<Text style={{ textAlign: "center" }}>Add</Text>
+							</Button>
+						</View>
+					</ReactiveBase>
+				</Container>
 			</View>
 		);
 	}

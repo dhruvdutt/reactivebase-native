@@ -97,8 +97,9 @@ class TodoModel {
 				id: id,
 				body: jsonObject
 			})
-			.on("data", function(response) {
-				console.log(response);
+			.on("data", (response) => {
+				this.inform();
+				console.log("addTodo", response);
 			})
 			.on("error", function(error) {
 				console.log(error);
