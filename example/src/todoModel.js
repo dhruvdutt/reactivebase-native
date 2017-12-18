@@ -16,6 +16,7 @@ class TodoModel {
 			app: "todomvc",
 			credentials: "kQSlRKaSv:a081eec0-b85f-4953-a3d0-c18f94b26de4"
 		});
+		this.forceUpdate = false;
 
 		this.appbaseRef
 			.search({
@@ -97,8 +98,9 @@ class TodoModel {
 				id: id,
 				body: jsonObject
 			})
-			.on("data", (response) => {
+			.on("data", response => {
 				console.log("Added todo, informing changes", response);
+				this.forceUpdate = true;
 				this.inform();
 			})
 			.on("error", function(error) {

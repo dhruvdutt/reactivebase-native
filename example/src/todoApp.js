@@ -126,8 +126,13 @@ class TodoApp extends Component {
 		);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log("@componentWillReceiveProps", nextProps);
+	}
+
 	render() {
-		console.log("this.state", this.state);
+		console.log("forceUpdate", this.props.model.forceUpdate);
+
 		let todos = this.props.model.todos;
 
 		let { nowShowing, newTodo } = this.state;
