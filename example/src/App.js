@@ -23,50 +23,60 @@ import StorybookUI from "../storybook";
 class Main extends Component {
 	state = {
 		isReady: false
-	}
+	};
 
 	async componentWillMount() {
 		await Expo.Font.loadAsync({
-			"Roboto": require("native-base/Fonts/Roboto.ttf"),
-			"Roboto_medium": require("native-base/Fonts/Roboto_medium.ttf"),
-			"Ionicons": require("native-base/Fonts/Ionicons.ttf")
+			Roboto: require("native-base/Fonts/Roboto.ttf"),
+			Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+			Ionicons: require("native-base/Fonts/Ionicons.ttf")
 		});
 
 		this.setState({ isReady: true });
 	}
 
 	onAllData = (items, loadMore) => {
-		return (<FlatList
-			style={{ width: "100%" }}
-			data={items || []}
-			keyExtractor={(item) => item._id}
-			renderItem={({ item }) => (<View style={{ margin: 5 }}>
-				<Text style={{ flex: 1, fontWeight: "bold" }}>{this.parseToElement(item._source.name)}</Text>
-				<Text>{item._source.brand} - {item._source.model}</Text>
-			</View>)}
-			onEndReachedThreshold={0.5}
-			onEndReached={loadMore}
-		/>)
-	}
+		return (
+			<FlatList
+				style={{ width: "100%" }}
+				data={items || []}
+				keyExtractor={item => item._id}
+				renderItem={({ item }) => (
+					<View style={{ margin: 5 }}>
+						<Text style={{ flex: 1, fontWeight: "bold" }}>
+							{this.parseToElement(item._source.name)}
+						</Text>
+						<Text>
+							{item._source.brand} - {item._source.model}
+						</Text>
+					</View>
+				)}
+				onEndReachedThreshold={0.5}
+				onEndReached={loadMore}
+			/>
+		);
+	};
 
-	parseToElement = (str) => {
+	parseToElement = str => {
 		const start = str.indexOf("<em>");
 		const end = str.indexOf("</em>");
 
 		if (start > -1) {
 			const pre = str.substring(0, start);
-			const highlight = str.substring(start+4, end);
-			const post = str.substring(end+5, str.length);
+			const highlight = str.substring(start + 4, end);
+			const post = str.substring(end + 5, str.length);
 
-			return (<Text style={{ flex: 1, fontWeight: "bold" }}>
-				{pre}
-				<Text style={{ backgroundColor: "yellow" }}>{highlight}</Text>
-				{this.parseToElement(post)}
-			</Text>);
+			return (
+				<Text style={{ flex: 1, fontWeight: "bold" }}>
+					{pre}
+					<Text style={{ backgroundColor: "yellow" }}>{highlight}</Text>
+					{this.parseToElement(post)}
+				</Text>
+			);
 		}
 
 		return str;
-	}
+	};
 
 	render() {
 		if (!this.state.isReady) {
@@ -101,7 +111,9 @@ class Main extends Component {
 							componentId="DataSearchComponent"
 							dataField="name"
 							defaultSelected="Nissan"
-							onValueChange={(val) => console.log("DataSearch onValueChange", val)}
+							onValueChange={val =>
+								console.log("DataSearch onValueChange", val)
+							}
 							react={{
 								and: "TextFieldComponent"
 							}}
@@ -110,24 +122,24 @@ class Main extends Component {
 						<SingleDropdownRange
 							componentId="SingleDropdownRange"
 							dataField="price"
-							data={
-								[{ "start": 0, "end": 100, "label": "Cheap" },
-									{ "start": 101, "end": 200, "label": "Moderate" },
-									{ "start": 201, "end": 500, "label": "Pricey" },
-									{ "start": 501, "end": 1000, "label": "First Date" }]
-							}
+							data={[
+								{ start: 0, end: 100, label: "Cheap" },
+								{ start: 101, end: 200, label: "Moderate" },
+								{ start: 201, end: 500, label: "Pricey" },
+								{ start: 501, end: 1000, label: "First Date" }
+							]}
 							defaultSelected={"Pricey"}
 						/>
 
 						<MultiDropdownRange
 							componentId="MultiDropdownRange"
 							dataField="price"
-							data={
-								[{ "start": 0, "end": 100, "label": "Cheap" },
-									{ "start": 101, "end": 200, "label": "Moderate" },
-									{ "start": 201, "end": 500, "label": "Pricey" },
-									{ "start": 501, "end": 1000, "label": "First Date" }]
-							}
+							data={[
+								{ start: 0, end: 100, label: "Cheap" },
+								{ start: 101, end: 200, label: "Moderate" },
+								{ start: 201, end: 500, label: "Pricey" },
+								{ start: 501, end: 1000, label: "First Date" }
+							]}
 							defaultSelected={["Pricey", "First Date"]}
 						/>
 
@@ -144,10 +156,7 @@ class Main extends Component {
 							dataField="color"
 							placeholder="Search color"
 						/>
-						<DatePicker
-							dataField="someField"
-							componentId="DatePicker"
-						/>
+						<DatePicker dataField="someField" componentId="DatePicker" />
 						<DateRange
 							dataField="someField"
 							componentId="DateRange"
@@ -178,7 +187,16 @@ class Main extends Component {
 								}
 							})}
 							react={{
-								and: ["DataController", "SingleDropdownListComponent", "MultiDropdownListComponent", "DataSearchComponent", "TextFieldComponent", "RangeSlider", "SingleDropdownRange", "MultiDropdownRange"]
+								and: [
+									"DataController",
+									"SingleDropdownListComponent",
+									"MultiDropdownListComponent",
+									"DataSearchComponent",
+									"TextFieldComponent",
+									"RangeSlider",
+									"SingleDropdownRange",
+									"MultiDropdownRange"
+								]
 							}}
 						/>
 					</View>
